@@ -1,27 +1,32 @@
 # -*- coding: utf-8 -*-
 """Step by step Decisiontree prediction diabetes"""
 
-# Install necessary libraries
+# Import necessary libraries
 import os
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import OneHotEncoder
-import graphviz
 import matplotlib.pyplot as plt
 import ipywidgets as widgets
 from IPython.display import display
 
-# Check if the dataset file already exists in the current directory
+# Function to load data
+def load_data(file_name):
+    if os.path.exists(file_name):
+        data = pd.read_csv(file_name)
+        print("Data loaded successfully.")
+    else:
+        print(f"File '{file_name}' not found in the current directory.")
+        file_path = input("Please provide the full path to the dataset file: ")
+        data = pd.read_csv(file_path)
+        print("Data loaded successfully.")
+    return data
+
+# Load data
 file_name = 'diabetes_prediction_dataset.csv'
-if os.path.exists(file_name):
-    # Load data from the file
-    data = pd.read_csv(file_name)
-    print("Data loaded successfully.")
-else:
-    # Raise an error if the file is not found
-    raise FileNotFoundError(f"File '{file_name}' not found in the current directory. Please make sure the file is present.")
+data = load_data(file_name)
 
 # Display the first few rows of the dataset
 print(data.head())
@@ -56,14 +61,25 @@ print(f'Accuracy: {accuracy}')
 print('Classification Report:')
 print(report)
 
-# Visualize the decision tree
-dot_data = export_graphviz(clf, out_file=None,
-                           feature_names=X.columns,
-                           class_names=['Negative', 'Positive'],
-                           filled=True, rounded=True,
-                           special_characters=True)
-graph = graphviz.Source(dot_data)
-graph.render("diabetes_decision_tree")
+# Ensure Graphviz executables are installed
+try:
+    import graphviz
+    dot_data = export_graphviz(clf, out_file=None,
+                               feature_names=X.columns,
+                               class_names=['Negative', 'Positive'],
+                               filled=True, rounded=True,
+                               special_characters=True)
+    graph = graphviz.Source(dot_data)
+    graph.render("diabetes_decision_tree")
+except ImportError:
+    print("Graphviz library is not installed. Please install it using the following command:")
+    print("pip install graphviz")
+except graphviz.backend.ExecutableNotFound:
+    print("Graphviz executable not found. Please ensure Graphviz is installed and added to your PATH.")
+    print("You can install Graphviz using the following commands:")
+    print("Ubuntu/Debian: sudo apt-get install graphviz")
+    print("macOS (using Homebrew): brew install graphviz")
+    print("Windows: Download from https://graphviz.gitlab.io/_pages/Download/Download_windows.html")
 
 # Function to take user input and make predictions using widgets
 def predict_diabetes_widget(age, gender, bmi, hypertension, heart_disease, smoking_history, HbA1c_level, blood_glucose_level):
@@ -115,9 +131,4 @@ display(age_widget, gender_widget, bmi_widget, hypertension_widget, heart_diseas
 
 # Set up button click event
 def on_button_click(b):
-    predict_diabetes_widget(age_widget.value, gender_widget.value, bmi_widget.value,
-                            hypertension_widget.value, heart_disease_widget.value,
-                            smoking_history_widget.value, HbA1c_level_widget.value,
-                            blood_glucose_level_widget.value)
-
-button_widget.on_click(on_button_click)
+    predict_diabetes_widget
