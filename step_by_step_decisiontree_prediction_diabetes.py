@@ -157,25 +157,3 @@ def on_button_click(b):
 
 button.on_click(on_button_click)
 
-"""**Explanation:**
-The classification report provides several key metrics for evaluating the performance of the model:
-
-**Precision:** The proportion of true positive predictions among all positive predictions. For class 0 (non-diabetic), the precision is 0.98, indicating that 98% of the positive predictions are correct. For class 1 (diabetic), the precision is 0.71.
-
-**Recall** The proportion of true positive predictions among all actual positives. For class 0, the recall is 0.97, meaning 97% of actual non-diabetic cases are correctly identified. For class 1, the recall is 0.74.
-
-**F1-score:** The harmonic mean of precision and recall, providing a balance between the two. For class 0, the F1-score is 0.97, while for class 1, it is 0.72.
-
-**Support:** The number of actual occurrences of each class in the test set. There are 27,453 instances of class 0 and 2,547 instances of class 1.
-
-**Accuracy:** The overall proportion of correct predictions. The accuracy of the model is 0.9524, meaning the model correctly predicts diabetes status for 95.24% of the test cases.
-Macro average: The unweighted mean of the precision, recall, and F1-score for each class, treating all classes equally.
-
-**Weighted average:** The weighted mean of the precision, recall, and F1-score, accounting for the number of instances in each class.
-
-***Interpretation:***
-The high precision and recall for class 0 indicate that the model is very effective at identifying non-diabetic individuals.
-The lower precision and recall for class 1 suggest that the model has some difficulty correctly identifying diabetic individuals, which could be due to class imbalance or inherent complexity in distinguishing these cases.
-
-
-"""
